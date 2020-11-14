@@ -6,6 +6,14 @@ export function getEmployee() {
     }  
 }; 
 
+export function getSharedData(){
+    return dispatch => {
+        return dispatch({
+            type: "GET_SHARED_DATA",
+        });
+    }
+}
+
 export function addEmployee(data) {  
     return dispatch => {  
         return dispatch({  
@@ -23,6 +31,15 @@ export function editEmployee(data) {
         });  
     }  
 };  
+
+export function editSharedData(data) {
+    return dispatch => {
+        return dispatch({
+            type: 'EDIT_SHARED_DATA',
+            payload: data
+        });
+    }
+}
 
 export function deleteEmployee(employeeId) {  
     return dispatch => {  

@@ -2,11 +2,12 @@ import React, { Component } from "react";
 import logo from "./logo.svg";  
 import "./App.css";  
 import PropTypes from 'prop-types';  
-import { getEmployee, addEmployee, editEmployee, deleteEmployee } from './Redux/actions';  
+import { getEmployee, addEmployee, editEmployee, deleteEmployee, getSharedData, editSharedData } from './Redux/actions';  
 import { connect } from 'react-redux';  
   
 const mapStateToProps = state => ({  
-  employees: state.employees  
+  employees: state.employees,
+  shareddata: state.shareddata,  
 });  
   
 class App extends Component {  
@@ -16,7 +17,7 @@ class App extends Component {
       id: 0, 
       employeeName: "",
       employeeDepartment: "",
-    }  
+    }
   }  
   
   static propTypes = {  
@@ -24,11 +25,27 @@ class App extends Component {
     getEmployee: PropTypes.func.isRequired,
     addEmployee: PropTypes.func.isRequired,
     editEmployee: PropTypes.func.isRequired,
-    deleteEmployee: PropTypes.func.isRequired  
+    deleteEmployee: PropTypes.func.isRequired,
+    shareddata: PropTypes.array.isRequired,
+    getSharedData: PropTypes.func.isRequired,  
   };  
   
   componentDidMount() {  
-    this.props.getEmployee();  
+    this.props.getEmployee();
+    let searchPagePath_obj = this.props.shareddata.find(
+      el => el.type === 'componentProps' && el.name === 'searchPagePath'
+    )
+    console.log(searchPagePath_obj);
+    if (searchPagePath_obj.value !== 'some_path'){
+      const updatedSharedData = {
+        id: searchPagePath_obj.id,
+        type: searchPagePath_obj.type,
+        name: searchPagePath_obj.name,
+        value: 'some_path'
+      };
+      this.props.editSharedData(updatedSharedData);
+    }
+    console.log(this.props.shareddata ? this.props.shareddata : "")
   }  
 
   submitData = () => {
@@ -89,6 +106,7 @@ class App extends Component {
 
 
   render() {  
+    console.log(this.props);
     return (  
       <div className="App">  
         <header className="App-header">  
@@ -131,4 +149,4 @@ class App extends Component {
 }  
 
 
-export default connect(mapStateToProps, { getEmployee, addEmployee, editEmployee, deleteEmployee})(App); 
+export default connect(mapStateToProps, { getEmployee, addEmployee, editEmployee, deleteEmployee, getSharedData, editSharedData})(App); 

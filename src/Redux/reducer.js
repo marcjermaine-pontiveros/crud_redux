@@ -34,6 +34,20 @@ const reducer = (state = initialstate, action) => {
                 employees: state.employees.filter
                     (item => item.id !== action.payload)
             }
+
+        case 'GET_SHARED_DATA':
+            return {
+                ...state
+            }
+
+        case 'EDIT_SHARED_DATA':
+            return {
+                ...state,
+                    shareddata:
+                        state.shareddata.map(
+                            (content, i) => content.id === action.payload.id ? {...content, type: action.payload.type, name: action.payload.name, value: action.payload.value} : content
+                        )
+            }
         default:
             return state;
 
